@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:padding="16dp" >
+    android:padding="16dp"
+    tools:context=".PocketSphinxActivity">
 
     <TextView
         android:id="@+id/caption_text"
@@ -25,4 +27,9 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </LinearLayout>
+    <TextView
+        android:id="@+id/my"
+        android:text="this is where"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </LinearLayout>

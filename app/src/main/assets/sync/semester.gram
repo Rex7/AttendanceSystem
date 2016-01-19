@@ -1,0 +1,3 @@
+#JSGF V1.0;
+grammar semester;
+public <semester> = first | second | third | fourth | fifth | sixth ;

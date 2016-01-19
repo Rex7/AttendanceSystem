@@ -36,10 +36,11 @@ import static edu.cmu.pocketsphinx.SpeechRecognizerSetup.defaultSetup;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 import edu.cmu.pocketsphinx.Assets;
@@ -49,15 +50,17 @@ import edu.cmu.pocketsphinx.SpeechRecognizer;
 
 public class PocketSphinxActivity extends Activity implements
         RecognitionListener {
+    TextView resultMy ;
 		
     /* Named searches allow to quickly reconfigure the decoder */
     private static final String KWS_SEARCH = "wakeup";
-    private static final String FORECAST_SEARCH = "forecast";
-    private static final String DIGITS_SEARCH = "digits";
-    private static final String PHONE_SEARCH = "phones";
+
     private static final String MENU_SEARCH = "menu";
+    private static final String Greeting_Search="system";
+
     
     /* Keyword we are looking for to activate menu */
+    //oh mighty computer
     private static final String KEYPHRASE = "oh mighty computer";
 
     private SpeechRecognizer recognizer;
@@ -68,15 +71,16 @@ public class PocketSphinxActivity extends Activity implements
         super.onCreate(state);
 
         // Prepare the data for UI
-        captions = new HashMap<String, Integer>();
+        captions = new HashMap<>();
         captions.put(KWS_SEARCH, R.string.kws_caption);
-        captions.put(MENU_SEARCH, R.string.menu_caption);
-        captions.put(DIGITS_SEARCH, R.string.digits_caption);
-        captions.put(PHONE_SEARCH, R.string.phone_caption);
-        captions.put(FORECAST_SEARCH, R.string.forecast_caption);
+        captions.put(MENU_SEARCH, R.string.words_caption);
+
+        captions.put(Greeting_Search,R.string.words_caption);
+
         setContentView(R.layout.main);
         ((TextView) findViewById(R.id.caption_text))
                 .setText("Preparing the recognizer");
+        resultMy=(TextView)findViewById(R.id.my);
 
         // Recognizer initialization is a time-consuming and it involves IO,
         // so we execute it in async task
@@ -121,20 +125,22 @@ public class PocketSphinxActivity extends Activity implements
     @Override
     public void onPartialResult(Hypothesis hypothesis) {
         if (hypothesis == null)
-    	    return;
+            return;
 
         String text = hypothesis.getHypstr();
         if (text.equals(KEYPHRASE))
             switchSearch(MENU_SEARCH);
-        else if (text.equals(DIGITS_SEARCH))
-            switchSearch(DIGITS_SEARCH);
-        else if (text.equals(PHONE_SEARCH))
-            switchSearch(PHONE_SEARCH);
-        else if (text.equals(FORECAST_SEARCH))
-            switchSearch(FORECAST_SEARCH);
-        else
-            ((TextView) findViewById(R.id.result_text)).setText(text);
-    }
+        else {
+            //try {
+                ((TextView)findViewById(R.id.result_text)).setText(text);
+                //Class cs = Class.forName("edu.cmu.pocketsphinx.demo." + text);
+                //Intent i = new Intent(this,cs );
+               // startActivity(i);
+               // finish();
+          //  }  // catch (ClassNotFoundException e) {
+            }
+        }
+
 
     /**
      * This callback is called when we stop the recognizer.
@@ -144,7 +150,19 @@ public class PocketSphinxActivity extends Activity implements
         ((TextView) findViewById(R.id.result_text)).setText("");
         if (hypothesis != null) {
             String text = hypothesis.getHypstr();
-            makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+            try {
+
+
+                Class cs = Class.forName("edu.cmu.pocketsphinx.demo." + text);
+                Intent i = new Intent(this, cs);
+                startActivity(i);
+                finish();
+                makeText(getApplicationContext(), "use this to start a new activity" + text, Toast.LENGTH_SHORT).show();
+
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+
+            }
         }
     }
 
@@ -157,8 +175,9 @@ public class PocketSphinxActivity extends Activity implements
      */
     @Override
     public void onEndOfSpeech() {
-        if (!recognizer.getSearchName().equals(KWS_SEARCH))
+        if (!recognizer.getSearchName().equals(KWS_SEARCH)) {
             switchSearch(KWS_SEARCH);
+        }
     }
 
     private void switchSearch(String searchName) {
@@ -167,11 +186,13 @@ public class PocketSphinxActivity extends Activity implements
         // If we are not spotting, start listening with timeout (10000 ms or 10 seconds).
         if (searchName.equals(KWS_SEARCH))
             recognizer.startListening(searchName);
-        else
-            recognizer.startListening(searchName, 10000);
 
-        String caption = getResources().getString(captions.get(searchName));
-        ((TextView) findViewById(R.id.caption_text)).setText(caption);
+        else
+            recognizer.startListening(searchName, 100000);
+            String caption = getResources().getString(captions.get(searchName));
+
+            ((TextView) findViewById(R.id.caption_text)).setText(caption);
+            resultMy.setText(caption);
     }
 
     private void setupRecognizer(File assetsDir) throws IOException {
@@ -205,17 +226,7 @@ public class PocketSphinxActivity extends Activity implements
         File menuGrammar = new File(assetsDir, "menu.gram");
         recognizer.addGrammarSearch(MENU_SEARCH, menuGrammar);
 
-        // Create grammar-based search for digit recognition
-        File digitsGrammar = new File(assetsDir, "digits.gram");
-        recognizer.addGrammarSearch(DIGITS_SEARCH, digitsGrammar);
-        
-        // Create language model search
-        File languageModel = new File(assetsDir, "weather.dmp");
-        recognizer.addNgramSearch(FORECAST_SEARCH, languageModel);
-        
-        // Phonetic search
-        File phoneticModel = new File(assetsDir, "en-phone.dmp");
-        recognizer.addAllphoneSearch(PHONE_SEARCH, phoneticModel);
+
     }
 
     @Override

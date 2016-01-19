@@ -1,0 +1,8 @@
+#JSGF V1.0;
+
+grammar course;
+
+<electornic> = electronics;
+<computer> = computer;
+<information> = information;
+public <course> =  <electornic> | <computer> | <information> ;

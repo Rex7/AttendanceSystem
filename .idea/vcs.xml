@@ -2,6 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/attend" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/attendance-system-using-voice-" vcs="Git" />
   </component>
 </project>
-
