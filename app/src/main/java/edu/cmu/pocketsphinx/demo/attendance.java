@@ -23,9 +23,9 @@ import static edu.cmu.pocketsphinx.SpeechRecognizerSetup.defaultSetup;
 public class attendance extends Activity implements RecognitionListener {
 
     //This Is Used for getting the result  of the data spoken;
-    String name_teacher;
-    String get_course;
-    String get_semester;
+    String name_teacher="";
+    String get_course="";
+    String get_semester="";
 
     int count = 0;
     private TextToSpeech tspeech;
@@ -53,8 +53,9 @@ public class attendance extends Activity implements RecognitionListener {
         rex.put(Course_Search, R.string.course);
         rex.put(Menu_Se, R.string.attendance_menu);
         rex.put(Semester_Seacrh, R.string.semester);
-        smaltext = (TextView) findViewById(R.id.small);
         setContentView(R.layout.attendance);
+        smaltext = (TextView) findViewById(R.id.small);
+
         val = new String[4];
         ((TextView) findViewById(R.id.title_attendance)).setText("Preparing the recognizer");
 
@@ -131,6 +132,11 @@ public class attendance extends Activity implements RecognitionListener {
                 }
                 if (index==4)
                 {
+                    name_teacher=val[1];
+                    get_course=val[2];
+                    get_semester=val[3];
+                   // makeText(getApplicationContext(),"Name of Teacher"+name_teacher+"\n Course:"+get_course+"\n Semester"+get_semester,Toast.LENGTH_LONG).show();
+                   smaltext.setText("Name of Teacher"+name_teacher+"\n Course:"+get_course+"\n Semester"+get_semester);
                     switchSearch(KWS_SE);
                     index=0;
                 }
