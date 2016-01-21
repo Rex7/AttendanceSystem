@@ -107,13 +107,10 @@ public class attendance extends Activity implements RecognitionListener {
         String text = hypothesis.getHypstr();
         if (text.equals(KEY)) {
             switchSearch(arr[count]);
-            count++;
-        }
 
-       if(index==0)
-       {
-           index=1;
-       }
+            count++;
+
+        }
         ((TextView) findViewById(R.id.resul)).setText(text);
 
 
@@ -124,12 +121,22 @@ public class attendance extends Activity implements RecognitionListener {
         ((TextView) findViewById(R.id.resul)).setText("");
         if (hypothesis != null) {
             String texty = hypothesis.getHypstr();
-            Toast.makeText(getApplicationContext(), "index" + index, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "index" + index, Toast.LENGTH_SHORT).show();
             try {
-                val[index] = texty;
-                makeText(getApplicationContext(), "Array" + val[index], Toast.LENGTH_LONG).show();
-                index++;
-                makeText(getApplicationContext(), "Words Spoken" + texty, Toast.LENGTH_SHORT).show();
+                if (index != 4) {
+                    val[index] = texty;
+                    data(val, index);
+                    makeText(getApplicationContext(), "Array from onResult" + val[index], Toast.LENGTH_SHORT).show();
+                    index++;
+                }
+                if (index==4)
+                {
+                    switchSearch(KWS_SE);
+                    index=0;
+                }
+
+
+
 
 
             } catch (ArrayIndexOutOfBoundsException E) {
@@ -160,6 +167,7 @@ public class attendance extends Activity implements RecognitionListener {
             } catch (ArrayIndexOutOfBoundsException E) {
                 Toast.makeText(getApplicationContext(), "Already in Last position dude", Toast.LENGTH_LONG).show();
                 count = 0;
+                //data(val,index);
                 onTimeout();
 
 
@@ -178,7 +186,21 @@ public class attendance extends Activity implements RecognitionListener {
             recognizer.startListening(searchName, 10000);
         String captionu = getResources().getString(rex.get(searchName));
         ((TextView) findViewById(R.id.title_attendance)).setText(captionu);
+    }
+    public void data(String a[] ,int ind)
+    {
 
+        if(ind==3)
+        {
+            val[ind] =  a[ind];
+            Toast.makeText(getApplicationContext(),"From data"+val[ind],Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            val[ind]=a[ind];
+            Toast.makeText(getApplicationContext(),"its the else part of data"+val[ind],Toast.LENGTH_SHORT).show();
+
+        }
 
     }
 
@@ -232,13 +254,8 @@ public class attendance extends Activity implements RecognitionListener {
     @Override
     public void onTimeout() {
 
-        name_teacher = val[1];
-        get_course = val[2];
-        get_semester=val[3];
 
-        Toast.makeText(getApplicationContext(), "nameof teach" + name_teacher + "\ncourse" + get_course + "semester" + get_semester, Toast.LENGTH_LONG).show();
 
-        Toast.makeText(getApplicationContext(),"Semester"+get_semester,Toast.LENGTH_LONG).show();
         switchSearch(KWS_SE);
     }
 }
