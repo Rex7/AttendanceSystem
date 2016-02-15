@@ -40,7 +40,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 import edu.cmu.pocketsphinx.Assets;
@@ -50,13 +51,14 @@ import edu.cmu.pocketsphinx.SpeechRecognizer;
 
 public class PocketSphinxActivity extends Activity implements
         RecognitionListener {
+
     TextView resultMy ;
 		
     /* Named searches allow to quickly reconfigure the decoder */
     private static final String KWS_SEARCH = "wakeup";
 
     private static final String MENU_SEARCH = "menu";
-    private static final String Greeting_Search="system";
+    //private static final String Greeting_Search="system";
 
     
     /* Keyword we are looking for to activate menu */
@@ -75,7 +77,7 @@ public class PocketSphinxActivity extends Activity implements
         captions.put(KWS_SEARCH, R.string.kws_caption);
         captions.put(MENU_SEARCH, R.string.words_caption);
 
-        captions.put(Greeting_Search,R.string.words_caption);
+       // captions.put(Greeting_Search,R.string.words_caption);
 
         setContentView(R.layout.main);
         ((TextView) findViewById(R.id.caption_text))
@@ -108,6 +110,25 @@ public class PocketSphinxActivity extends Activity implements
                 }
             }
         }.execute();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+      getMenuInflater().inflate(R.menu.enroll,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.Enroll:
+                Intent i = new Intent(this,Frontend.class);
+                startActivity(i);
+                return  true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
     @Override

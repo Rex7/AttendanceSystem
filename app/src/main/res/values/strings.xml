@@ -10,4 +10,6 @@
     <string name="course"> say / Information / Computer /Electronics </string>
     <string name="semester"> say First / Second /Third / Fourth / Fifth / Sixth</string>
     <string name="NameOfTeacher"> Say Sudhir oR prasad </string>
+    <string name="PresentOrAbsent">say present or absent</string>
+    <string name="NumberofStudent">Say numbers of student</string>
 </resources>

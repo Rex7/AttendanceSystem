@@ -26,6 +26,10 @@ public class attendance extends Activity implements RecognitionListener {
     String name_teacher="";
     String get_course="";
     String get_semester="";
+    String status_st="";
+    String numbers="";
+    String [] array;
+
 
     int count = 0;
     private TextToSpeech tspeech;
@@ -37,7 +41,9 @@ public class attendance extends Activity implements RecognitionListener {
     private static final String name_search = "name";
     private static final String Course_Search = "course";
     private static final String Semester_Seacrh = "semester";
-    String[] arr = {name_search, Course_Search, Semester_Seacrh};
+    private static final String PresentOrAbsent="Status.gram";
+    private static final String NumbersOfStudents="number";
+    String[] arr = {name_search, Course_Search, Semester_Seacrh,PresentOrAbsent,NumbersOfStudents};
     String[] val;
     TextView smaltext;
     int index = 0;
@@ -53,10 +59,14 @@ public class attendance extends Activity implements RecognitionListener {
         rex.put(Course_Search, R.string.course);
         rex.put(Menu_Se, R.string.attendance_menu);
         rex.put(Semester_Seacrh, R.string.semester);
+        rex.put(PresentOrAbsent,R.string.PresentOrAbsent);
+        rex.put(NumbersOfStudents,R.string.NumberofStudent);
+
         setContentView(R.layout.attendance);
+        // helps to link design/content to java file , r is a file of all variables n constants , layout.atendance is xml contains all designor variableswidget also
         smaltext = (TextView) findViewById(R.id.small);
 
-        val = new String[4];
+        val = new String[6];
         ((TextView) findViewById(R.id.title_attendance)).setText("Preparing the recognizer");
 
         new AsyncTask<Void, Void, Exception>() {
@@ -111,6 +121,7 @@ public class attendance extends Activity implements RecognitionListener {
 
             count++;
 
+
         }
         ((TextView) findViewById(R.id.resul)).setText(text);
 
@@ -124,19 +135,23 @@ public class attendance extends Activity implements RecognitionListener {
             String texty = hypothesis.getHypstr();
             Toast.makeText(getApplicationContext(), "index" + index, Toast.LENGTH_SHORT).show();
             try {
-                if (index != 4) {
+                if (index != 6) {
                     val[index] = texty;
-                    data(val, index);
+                    //data(val, index);
                     makeText(getApplicationContext(), "Array from onResult" + val[index], Toast.LENGTH_SHORT).show();
                     index++;
                 }
-                if (index==4)
+                if (index==6)
                 {
                     name_teacher=val[1];
                     get_course=val[2];
                     get_semester=val[3];
+                    status_st=val[4];
+                    numbers=val[5];
+                    Toast.makeText(getApplicationContext(),"Blank space"+numbers.contains(""),Toast.LENGTH_SHORT).show();
+
                    // makeText(getApplicationContext(),"Name of Teacher"+name_teacher+"\n Course:"+get_course+"\n Semester"+get_semester,Toast.LENGTH_LONG).show();
-                   smaltext.setText("Name of Teacher"+name_teacher+"\n Course:"+get_course+"\n Semester"+get_semester);
+                   smaltext.setText("Name of Teacher"+name_teacher+"\n Course:"+get_course+"\n Semester"+get_semester+"Status of attendance is:"+status_st+"Number of student"+numbers);
                     switchSearch(KWS_SE);
                     index=0;
                 }
@@ -193,6 +208,7 @@ public class attendance extends Activity implements RecognitionListener {
         String captionu = getResources().getString(rex.get(searchName));
         ((TextView) findViewById(R.id.title_attendance)).setText(captionu);
     }
+    /*
     public void data(String a[] ,int ind)
     {
 
@@ -206,9 +222,13 @@ public class attendance extends Activity implements RecognitionListener {
             val[ind]=a[ind];
             Toast.makeText(getApplicationContext(),"its the else part of data"+val[ind],Toast.LENGTH_SHORT).show();
 
+
+
         }
 
+
     }
+    */
 
     private void setupRecognizer(File assetsDir) throws IOException {
         // The recognizer can be configured to perform multiple searches
@@ -248,6 +268,12 @@ public class attendance extends Activity implements RecognitionListener {
         //Grammar for semester
         File SemesterGrammar = new File(assetsDir, "semester.gram");
         recognizer.addGrammarSearch(Semester_Seacrh, SemesterGrammar);
+        //grammar for present or absent;
+        File PresentAbsent = new File(assetsDir,"Status.gram");
+        recognizer.addGrammarSearch(PresentOrAbsent,PresentAbsent);
+        //lanugae model for numbers
+        File Numbers=new File(assetsDir,"number.dmp");
+        recognizer.addNgramSearch(NumbersOfStudents,Numbers);
 
 
     }

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/Title_cap"
+        android:text="Student Record"
+        android:textSize="22sp"
+        android:textColor="#2683f5"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/FirstName"
+        android:layout_below="@+id/Title_cap"
+        android:layout_marginTop="22dp"
+        android:hint="First Name"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:layout_width="320dp"
+        android:inputType="text"
+        android:textColorHint="#000"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/LastName"
+        android:layout_marginTop="22dp"
+        android:layout_centerHorizontal="true"
+        android:hint="Last Name"
+        android:gravity="center_horizontal"
+        android:textColorHint="#000"
+        android:layout_below="@+id/FirstName"
+        android:layout_width="320dp"
+        android:inputType="text"
+        android:layout_height="wrap_content" />
+    <Spinner
+        android:id="@+id/Course"
+        android:layout_width="320dp"
+        android:layout_centerHorizontal="true"
+        android:hint="Course"
+        android:gravity="center_horizontal"
+        android:textColorHint="#000"
+        android:layout_marginTop="22dp"
+        android:layout_below="@+id/LastName"
+        android:inputType="text"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/EmailId"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp"
+        android:hint="Emailid"
+        android:gravity="center_horizontal"
+        android:textColorHint="#000"
+        android:layout_below="@+id/Course"
+        android:layout_width="320dp"
+        android:inputType="textEmailAddress"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/PhoneNo"
+        android:layout_below="@+id/EmailId"
+        android:layout_width="320dp"
+        android:layout_centerHorizontal="true"
+        android:hint="Phoneno"
+        android:inputType="phone"
+        android:layout_marginTop="22dp"
+        android:gravity="center_horizontal"
+        android:textColorHint="#000"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/Rollno"
+        android:layout_marginTop="22dp"
+        android:gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:textColorHint="#000"
+        android:inputType="number"
+        android:hint="Rollno"
+        android:layout_below="@+id/PhoneNo"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/Submit"
+        android:textColor="#e70b0b"
+        android:onClick="Submit"
+        android:layout_marginTop="22dp"
+        android:layout_below="@+id/Rollno"
+        android:text="Create Account"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="clear"
+        android:onClick="clear"
+        android:layout_below="@+id/Submit"
+        android:layout_centerHorizontal="true">
+
+    </Button>
+
+
+
+</RelativeLayout>

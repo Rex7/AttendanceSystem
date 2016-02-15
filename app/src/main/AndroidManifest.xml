@@ -31,6 +31,10 @@
             android:name=".record"
             android:label="record babe">
         </activity>
+        <activity android:name=".Frontend"
+            android:label="Student Enrollment">
+
+        </activity>
         <activity
             android:name=".send"
             android:label="Send Record">
