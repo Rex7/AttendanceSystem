@@ -148,10 +148,14 @@ public class attendance extends Activity implements RecognitionListener {
                     get_semester=val[3];
                     status_st=val[4];
                     numbers=val[5];
-                    Toast.makeText(getApplicationContext(),"Blank space"+numbers.contains(""),Toast.LENGTH_SHORT).show();
+                    array=numbers.split(" ");
+                    Toast.makeText(getApplicationContext(),"Blank space"+numbers.contains(" "),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Size of string numbers"+array.length,Toast.LENGTH_SHORT).show();
+                    for(String numb:array)
+                        Toast.makeText(getApplicationContext(),"ARRAY of numbr"+numb,Toast.LENGTH_SHORT).show();
 
                    // makeText(getApplicationContext(),"Name of Teacher"+name_teacher+"\n Course:"+get_course+"\n Semester"+get_semester,Toast.LENGTH_LONG).show();
-                   smaltext.setText("Name of Teacher"+name_teacher+"\n Course:"+get_course+"\n Semester"+get_semester+"Status of attendance is:"+status_st+"Number of student"+numbers);
+                   smaltext.setText("Name of Teacher"+name_teacher+"\n Course:"+get_course+"\n Semester"+get_semester+"Status of attendance is:"+status_st+"Number of student"+array[0]);
                     switchSearch(KWS_SE);
                     index=0;
                 }
