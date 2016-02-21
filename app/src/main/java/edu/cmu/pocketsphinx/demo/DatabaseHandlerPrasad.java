@@ -332,11 +332,6 @@ public class DatabaseHandlerPrasad extends SQLiteOpenHelper {
     }
     public void update(String course, String semester, TreeSet<String> Student_numbers,String status) {
         String tablename, day;
-        Cursor c = null;
-
-
-        String present = "";
-
         Calendar cal = Calendar.getInstance();
         String month = String.valueOf(1 + (cal.get(Calendar.MONTH)));
         day = String.valueOf(cal.get(Calendar.DATE));

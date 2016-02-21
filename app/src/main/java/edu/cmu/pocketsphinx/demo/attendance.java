@@ -180,6 +180,12 @@ public class attendance extends Activity implements RecognitionListener {
                         DatabaseHandlerPrasad ps=new DatabaseHandlerPrasad(this,null,null,1);
                         ps.update(get_course,get_semester,s,status_st);
                     }
+                    if(name_teacher.equalsIgnoreCase("SUDHIR"))
+                    {
+                        DatabaseHandlerSudhir sp=new DatabaseHandlerSudhir(this,null,null,1);
+                        sp.update(get_course,get_semester,s,status_st);
+                    }
+
 
 
                    // makeText(getApplicationContext(),"Name of Teacher"+name_teacher+"\n Course:"+get_course+"\n Semester"+get_semester,Toast.LENGTH_LONG).show();
