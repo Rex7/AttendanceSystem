@@ -175,8 +175,11 @@ public class attendance extends Activity implements RecognitionListener {
                     }
                     List<String> num= Arrays.asList(n);
                     TreeSet<String> s = new TreeSet<>(num);
-                    for(String fin:s)
-                            Toast.makeText(getApplicationContext(),"number array "+fin,Toast.LENGTH_LONG).show();
+                    if(name_teacher.equalsIgnoreCase("PRASAD"))
+                    {
+                        DatabaseHandlerPrasad ps=new DatabaseHandlerPrasad(this,null,null,1);
+                        ps.update(get_course,get_semester,s,status_st);
+                    }
 
 
                    // makeText(getApplicationContext(),"Name of Teacher"+name_teacher+"\n Course:"+get_course+"\n Semester"+get_semester,Toast.LENGTH_LONG).show();

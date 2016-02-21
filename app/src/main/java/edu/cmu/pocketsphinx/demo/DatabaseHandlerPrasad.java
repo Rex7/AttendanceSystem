@@ -2,11 +2,18 @@ package edu.cmu.pocketsphinx.demo;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
+
+import java.util.Calendar;
+import java.util.Iterator;
+import java.util.TreeSet;
 
 
 public class DatabaseHandlerPrasad extends SQLiteOpenHelper {
+    Context l;
     public static final int database_version=1;
     public static final String DataBase_name="Prasad.db";
     public static final String Table_name="MainTable";
@@ -36,8 +43,7 @@ public class DatabaseHandlerPrasad extends SQLiteOpenHelper {
             Course  + " TEXT NOT NULL  , "+
             Last_name+ " TEXT NOT NULL , " +
             Email_id + " TEXT NOT NULL , " +
-            col_phone + " TEXT NOT NULL , "+
-            " PRIMARY KEY (" + roll_no + ") "+
+            col_phone + " TEXT NOT NULL  "+
             ");";
 
     public static final String Information_Query=" CREATE TABLE " + Table_Information + " (\n" +
@@ -95,13 +101,14 @@ public class DatabaseHandlerPrasad extends SQLiteOpenHelper {
 
     public DatabaseHandlerPrasad(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DataBase_name, factory, database_version);
+        l=context;
     }
 
 
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        //using an array to create table of sex semester for information
+        //using an array to create table of six semester for information
         for(String tb_name:Table_info_attend) {
             String table_attend_query = "CREATE TABLE " + tb_name + " (\n" +
                     "\t`rollno`\tINTEGER,\n" +
@@ -135,8 +142,8 @@ public class DatabaseHandlerPrasad extends SQLiteOpenHelper {
                     "\t`28`\tTEXT,\n" +
                     "\t`29`\tTEXT,\n" +
                     "\t`30`\tTEXT,\n" +
-                    "\t`31`\tTEXT,\n" +
-                    "\tPRIMARY KEY(rollno)\n" +
+                    "\t`31`\tTEXT\n" +
+
                     ")";
             db.execSQL(table_attend_query);
         }
@@ -174,8 +181,7 @@ public class DatabaseHandlerPrasad extends SQLiteOpenHelper {
                     "\t`28`\tTEXT,\n" +
                     "\t`29`\tTEXT,\n" +
                     "\t`30`\tTEXT,\n" +
-                    "\t`31`\tTEXT,\n" +
-                    "\tPRIMARY KEY(rollno)\n" +
+                    "\t`31`\tTEXT\n" +
                     ")";
             db.execSQL(table_attend_query);
         }
@@ -212,8 +218,7 @@ public class DatabaseHandlerPrasad extends SQLiteOpenHelper {
                     "\t`28`\tTEXT,\n" +
                     "\t`29`\tTEXT,\n" +
                     "\t`30`\tTEXT,\n" +
-                    "\t`31`\tTEXT,\n" +
-                    "\tPRIMARY KEY(rollno)\n" +
+                    "\t`31`\tTEXT\n" +
                     ")";
             db.execSQL(table_attend_query);
         }
@@ -323,6 +328,357 @@ public class DatabaseHandlerPrasad extends SQLiteOpenHelper {
         db.execSQL(trigger_info_table);
         db.execSQL(trigger_co_table);
         db.execSQL(trigger_Ej_insert);
+
+    }
+    public void update(String course, String semester, TreeSet<String> Student_numbers,String status) {
+        String tablename, day;
+        Cursor c = null;
+
+
+        String present = "";
+
+        Calendar cal = Calendar.getInstance();
+        String month = String.valueOf(1 + (cal.get(Calendar.MONTH)));
+        day = String.valueOf(cal.get(Calendar.DATE));
+        tablename = Tablenamereturns(course, semester, month);
+        Toast.makeText(l, "Table Name" + tablename, Toast.LENGTH_LONG).show();
+        Toast.makeText(l, "date" + day, Toast.LENGTH_LONG).show();
+        ContentValues vs = new ContentValues();
+        vs.put(day, "present");
+        SQLiteDatabase db = getWritableDatabase();
+        TreeSet<String> S = new TreeSet<>(Student_numbers);
+        String[] numbers = S.toArray(new String[S.size()]);
+
+        if (status.equalsIgnoreCase("present")) {
+
+            for (String number : numbers) {
+                Toast.makeText(l, "number" + number, Toast.LENGTH_LONG).show();
+                db.execSQL("update " + tablename + " \n" +
+                        "set \"" + day + "\"=\"present\"\n" +
+                        "where rollno = " + number + " \n");
+
+
+            }
+
+        }
+        else
+        {
+            for(String number:numbers)
+            {
+                Toast.makeText(l, "calling from else part:absent", Toast.LENGTH_SHORT).show();
+                db.execSQL("update " + tablename + " \n" +
+                        "set \"" + day + "\"=\"absent\"\n" +
+                        "where rollno = " + number + " \n");
+            }
+        }
+    }
+
+
+
+
+
+    public String Tablenamereturns(String course,String semster,String month)
+    {
+
+
+        switch(course)
+        {
+            case "information":
+            {
+                switch(semster)
+                {
+                    case "first":
+                    {
+                        if(month.equals("6"))
+                        {
+                            return("IF1G_JUNE");
+
+                        }
+
+                        if(month.equals("7"))
+                        {
+                            return ("IF1G_JULY");
+                        }
+                        if(month.equals("8"))
+                            return ("IF1G_AUGUST");
+                        if(month.equals("9"))
+                            return ("IF1G_SEPT");
+                        if(month.equals("10"))
+                            return ("IF1G_OCT");
+
+                        break;
+                    }
+                    case "second":
+                    {
+                        System.out.println("month"+month);
+                        if(month.equals("12"))
+                            return("IF2G_DEC");
+                        if(month.equals("1"))
+                            return("IF2G_JAN");
+                        if(month.equals("2"))
+                            return("IF2G_FEB");
+                        if(month.equals("3"))
+                            return("IF2G_MARCH");
+                        break;
+                    }
+                    case "third":
+                    {
+                        if(month.equals("6"))
+                            return("IF3G_JUNE");
+                        if(month.equals("7"))
+                            return("IF3G_JULY");
+                        if(month.equals("8"))
+                            return("IF3G_AUGUST");
+                        if(month.equals("9"))
+                            return("IF3G_SEPT");
+                        if(month.equals("10"))
+                            return("IF3G_OCT");
+                        break;
+                    }
+                    case "fourth":
+                    {   if(month.equals("12"))
+                        return("IF4G_DEC");
+                        if(month.equals("1"))
+                            return("IF4G_JAN");
+                        if(month.equals("2"))
+                            return("IF4G_FEB");
+                        if(month.equals("3"))
+                            return("IF4G_MARCH");
+                        break;
+                    }
+                    case "fifth":
+                    {
+                        if(month.equals("6"))
+                            return("IF5G_JUNE");
+                        if(month.equals("7"))
+                            return("IF5G_JULY");
+                        if(month.equals("8"))
+                            return("IF5G_AUGUST");
+                        if(month.equals("9"))
+                            return("IF5G_SEPT");
+                        if(month.equals("10"))
+                            return("IF5G_OCT");
+
+                        break;
+                    }
+                    case "sixth":
+                    {
+                        if(month.equals("12"))
+                            return("IF6G_DEC");
+                        if(month.equals("1"))
+                            return("IF6G_JAN");
+                        if(month.equals("2"))
+                            return("IF6G_FEB");
+                        if(month.equals("3"))
+                            return("IF6G_MARCH");
+                        break;
+                    }
+                }
+                break;
+            }
+            case "electronics":
+            {
+                switch(semster)
+                {
+                    case "first":
+                    {
+                        if(month.equals("6"))
+                        {
+                            return("EJ1G_JUNE");
+
+                        }
+
+                        if(month.equals("7"))
+                        {
+                            return ("EJ1G_JULY");
+                        }
+                        if(month.equals("8"))
+                            return ("EJ1G_AUGUST");
+                        if(month.equals("9"))
+                            return ("EJ1G_SEPT");
+                        if(month.equals("10"))
+                            return ("EJ1G_OCT");
+
+                        break;
+                    }
+                    case "second":
+                    {
+                        System.out.println("month"+month);
+                        if(month.equals("12"))
+                            return("EJ2G_DEC");
+                        if(month.equals("1"))
+                            return("EJ2G_JAN");
+                        if(month.equals("2"))
+                            return("EJ2G_FEB");
+                        if(month.equals("3"))
+                            return("EJ2G_MARCH");
+                        break;
+                    }
+                    case "third":
+                    {
+                        if(month.equals("6"))
+                            return("EJ3G_JUNE");
+                        if(month.equals("7"))
+                            return("EJ3G_JULY");
+                        if(month.equals("8"))
+                            return("EJ3G_AUGUST");
+                        if(month.equals("9"))
+                            return("EJ3G_SEPT");
+                        if(month.equals("10"))
+                            return("EJ3G_OCT");
+                        break;
+                    }
+                    case "fourth":
+                    {   if(month.equals("12"))
+                        return("EJ4G_DEC");
+                        if(month.equals("1"))
+                            return("EJ4G_JAN");
+                        if(month.equals("2"))
+                            return("EJ4G_FEB");
+                        if(month.equals("3"))
+                            return("EJ4G_MARCH");
+                        break;
+                    }
+                    case "fifth":
+                    {
+                        if(month.equals("6"))
+                            return("EJ5G_JUNE");
+                        if(month.equals("7"))
+                            return("EJ5G_JULY");
+                        if(month.equals("8"))
+                            return("EJ5G_AUGUST");
+                        if(month.equals("9"))
+                            return("EJ5G_SEPT");
+                        if(month.equals("10"))
+                            return("EJ5G_OCT");
+
+                        break;
+                    }
+                    case "sixth":
+                    {
+                        if(month.equals("12"))
+                            return("EJ6G_DEC");
+                        if(month.equals("1"))
+                            return("EJ6G_JAN");
+                        if(month.equals("2"))
+                            return("EJ6G_FEB");
+                        if(month.equals("3"))
+                            return("EJ6G_MARCH");
+                        break;
+                    }
+                }
+                break;
+            }
+
+
+
+
+            case "computer":
+            {
+                switch(semster)
+                {
+                    case "first":
+                    {
+                        if(month.equals("6"))
+                        {
+                            return("CO1G_JUNE");
+
+                        }
+
+                        if(month.equals("7"))
+                        {
+                            return ("CO1G_JULY");
+                        }
+                        if(month.equals("8"))
+                            return ("CO1G_AUGUST");
+                        if(month.equals("9"))
+                            return ("CO1G_SEPT");
+                        if(month.equals("10"))
+                            return ("CO1G_OCT");
+
+                        break;
+                    }
+                    case "second":
+                    {
+                        System.out.println("month"+month);
+                        if(month.equals("12"))
+                            return("CO2G_DEC");
+                        if(month.equals("1"))
+                            return("CO2G_JAN");
+                        if(month.equals("2"))
+                            return("CO2G_FEB");
+                        if(month.equals("3"))
+                            return("CO2G_MARCH");
+                        break;
+                    }
+                    case "third":
+                    {
+                        if(month.equals("6"))
+                            return("CO3G_JUNE");
+                        if(month.equals("7"))
+                            return("CO3G_JULY");
+                        if(month.equals("8"))
+                            return("CO3G_AUGUST");
+                        if(month.equals("9"))
+                            return("CO3G_SEPT");
+                        if(month.equals("10"))
+                            return("CO3G_OCT");
+                        break;
+                    }
+                    case "fourth":
+                    {   if(month.equals("12"))
+                        return("CO4G_DEC");
+                        if(month.equals("1"))
+                            return("CO4G_JAN");
+                        if(month.equals("2"))
+                            return("CO4G_FEB");
+                        if(month.equals("3"))
+                            return("CO4G_MARCH");
+                        break;
+                    }
+                    case "fifth":
+                    {
+                        if(month.equals("6"))
+                            return("CO5G_JUNE");
+                        if(month.equals("7"))
+                            return("CO5G_JULY");
+                        if(month.equals("8"))
+                            return("CO5G_AUGUST");
+                        if(month.equals("9"))
+                            return("CO5G_SEPT");
+                        if(month.equals("10"))
+                            return("CO5G_OCT");
+
+                        break;
+                    }
+                    case "sixth":
+                    {
+                        if(month.equals("12"))
+                            return("CO6G_DEC");
+                        if(month.equals("1"))
+                            return("CO6G_JAN");
+                        if(month.equals("2"))
+                            return("CO6G_FEB");
+                        if(month.equals("3"))
+                            return("CO6G_MARCH");
+                        break;
+                    }
+                }
+
+
+
+
+
+
+                break;
+            }
+            default:
+                return("no record found");
+        }
+        return null;
+
+
+
 
     }
 
